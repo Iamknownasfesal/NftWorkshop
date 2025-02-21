@@ -114,3 +114,30 @@ public fun create_data(
             ),
         )
 }
+
+/// Set the mint price of the collection.
+/// * `cap`: The cap to prove ownership of the collection.
+/// * `collection`: The collection to set the mint price of.
+/// * `mint_price`: The new mint price of the collection.
+public fun set_mint_price(
+    _: &MintCap,
+    collection: &mut CollectionData,
+    mint_price: u64,
+) {
+    collection.mint_price = mint_price;
+}
+
+/// Claim the treasury of the collection.
+/// * `cap`: The cap to prove ownership of the collection.
+/// * `collection`: The collection to claim the treasury of.
+/// * `ctx`: The context of the transaction.
+/// * `return`: The treasury of the collection.
+public fun claim_treasury(
+    _: &MintCap,
+    collection: &mut CollectionData,
+    ctx: &mut TxContext,
+): Coin<SUI> {
+    let value = collection.treasury.value();
+
+    collection.treasury.split(value).into_coin(ctx)
+}
